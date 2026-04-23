@@ -1,138 +1,460 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Direction Générale | Miguel David Tillero Álvarez</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#050505">
+    
+    <meta name="description" content="Portail institutionnel de la Direction Générale — Alliance Française de San Cristóbal de Las Casas. Souveraineté, Excellence et Transparence fiduciaria.">
+    <meta name="author" content="Miguel David Tillero Álvarez">
+    <title>DIRECTION GÉNÉRALE | AF San Cristóbal de Las Casas</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@100;200;400;600&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { afred: '#e11f1c', afdark: '#030303', afgold: '#C5A059' },
-                    fontFamily: { cinzel: ['Cinzel', 'serif'], montserrat: ['Montserrat', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,600&family=Montserrat:wght@100;200;300;400;600&display=swap" rel="stylesheet">
+
     <style>
-        .glass-card { background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.04); }
-        .portrait-frame { border-left: 1px solid #e11f1c; border-bottom: 1px solid #e11f1c; }
-        .stat-card { border-top: 1px solid rgba(225, 31, 28, 0.2); }
-        video { filter: contrast(1.1) brightness(1.2); mix-blend-mode: screen; }
+        :root { 
+            --af-red: #C8211E; 
+            --af-gold: #C5A059; 
+            --af-dark: #050505; 
+            --af-white: #f5f0eb;
+        }
+
+        body { 
+            background-color: var(--af-dark); 
+            color: var(--af-white); 
+            font-family: 'Montserrat', sans-serif; 
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        #vanta-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+        /* Componentes de Grado Diplomático */
+        .glass-luxury { 
+            background: rgba(10, 10, 10, 0.82); 
+            backdrop-filter: blur(50px); 
+            border: 1px solid rgba(197, 160, 89, 0.15); 
+        }
+
+        .text-gold-gradient {
+            background: linear-gradient(135deg, var(--af-gold) 0%, #ffffff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .border-red-focus { border-left: 3px solid var(--af-red); }
+
+        .reveal { opacity: 0; transform: translateY(60px); }
+
+        /* Star Rating Interactif */
+        .star-rating { display: flex; flex-direction: row-reverse; gap: 15px; }
+        .star-rating input { display: none; }
+        .star-rating label { font-size: 2.2rem; color: rgba(255,255,255,0.08); cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .star-rating input:checked ~ label, .star-rating label:hover, .star-rating label:hover ~ label { color: var(--af-gold); text-shadow: 0 0 20px var(--af-gold); }
+
+        /* Governance Grid */
+        .council-card { 
+            border-bottom: 1px solid rgba(255,255,255,0.08); 
+            padding: 1.5rem 0; 
+            transition: 0.6s all ease; 
+        }
+        .council-card:hover { border-color: var(--af-red); transform: translateX(15px); }
+
+        /* Audio visualizer */
+        .audio-wave { display: flex; align-items: flex-end; gap: 3px; height: 20px; }
+        .audio-wave span { width: 3px; background: var(--af-red); animation: wave 1.2s infinite alternate ease-in-out; }
+        @keyframes wave { from { height: 4px; } to { height: 20px; } }
+        
+        .btn-send {
+            position: relative; overflow: hidden; border: 1px solid var(--af-red);
+            padding: 1.5rem; font-family: 'Cinzel', serif; font-weight: 700;
+            letter-spacing: 1em; transition: 0.8s;
+        }
+        .btn-send:hover { background: var(--af-red); color: white; box-shadow: 0 0 40px rgba(200, 33, 30, 0.4); }
     </style>
 </head>
-<body class="bg-afdark text-white font-montserrat tracking-tight selection:bg-afred">
+<body>
 
-    <nav class="fixed w-full z-50 p-8 flex justify-between items-center bg-black/60 backdrop-blur-xl border-b border-white/5">
-        <div class="flex items-center gap-6">
-            <span class="font-cinzel text-4xl text-afred font-bold">af</span>
-            <div class="hidden md:block">
-                <p class="font-cinzel text-[10px] tracking-[0.5em] uppercase">Alliance Française</p>
-                <p class="font-cinzel text-[8px] tracking-[0.4em] text-afred uppercase font-bold">San Cristóbal de Las Casas</p>
+<div id="vanta-bg"></div>
+
+<audio id="bg-audio" loop preload="auto"><source src="musique_institutionnelle.mp3" type="audio/mpeg"></audio>
+<button onclick="toggleAudio()" id="audio-btn" class="fixed bottom-12 right-12 z-50 glass-luxury p-6 rounded-full border border-red-900/40 hover:scale-110 transition-all">
+    <div class="audio-wave" id="wave-ui" style="display:none;">
+        <span style="animation-delay: 0.1s"></span><span style="animation-delay: 0.4s"></span><span style="animation-delay: 0.2s"></span><span style="animation-delay: 0.5s"></span>
+    </div>
+    <span id="audio-placeholder" class="text-xl">♪</span>
+</button>
+
+<nav id="nav" class="fixed w-full z-50 p-10 flex justify-between items-center transition-all duration-1000 bg-gradient-to-b from-black/80 to-transparent">
+    <div class="flex items-center gap-12">
+        <span class="font-cinzel text-5xl font-bold text-[#C8211E] drop-shadow-lg">af</span>
+        <div class="hidden xl:block border-l border-white/20 pl-12">
+            <p class="font-cinzel text-[14px] tracking-[0.7em] uppercase text-white/90">Alliance Française</p>
+            <p class="font-cinzel text-[10px] tracking-[0.5em] text-[#C8211E] uppercase font-bold">San Cristóbal de Las Casas</p>
+        </div>
+    </div>
+    <div class="flex gap-16 text-[11px] tracking-[0.6em] font-light">
+        <a href="#gouvernance" class="hover:text-[#C8211E] transition-colors uppercase">Gouvernance</a>
+        <a href="#fondement" class="hover:text-[#C8211E] transition-colors uppercase">Légalité</a>
+        <a href="#liaison" class="hover:text-[#C8211E] transition-colors uppercase">Contact</a>
+    </div>
+</nav>
+
+<section class="min-h-screen flex items-center justify-center pt-32 px-14">
+    <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-12 gap-32 items-center">
+        
+        <div class="lg:col-span-5 relative group reveal">
+            <div class="absolute -inset-6 border border-red-900/25 rounded-xs"></div>
+            <img src="IMG-20250925-WA0034.jpg" alt="Monsieur Miguel David Tillero Álvarez" class="w-full grayscale group-hover:grayscale-0 transition-all duration-1000 shadow-2xl ring-1 ring-white/5">
+            <div class="absolute -bottom-12 -right-12 bg-[#C8211E] p-10 shadow-2xl backdrop-blur-xl border border-white/10">
+                <p class="font-cinzel text-white text-[12px] tracking-[0.6em] uppercase font-bold">Délégué Spécial</p>
+                <p class="text-white/70 text-[9px] uppercase mt-3 tracking-widest italic">Souveraineté Institutionnelle</p>
             </div>
         </div>
-        <div class="flex gap-8 text-[9px] tracking-[0.4em]">
-            <button onclick="setLang('fr')" class="hover:text-afred transition-all">FR</button>
-            <button onclick="setLang('es')" class="hover:text-afred transition-all">ES</button>
-        </div>
-    </nav>
 
-    <main class="min-h-screen flex items-center pt-32 pb-20 px-8 max-w-7xl mx-auto">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-            <div class="lg:col-span-5 relative group">
-                <div class="absolute -top-10 -left-10 w-64 h-64 bg-afred/10 rounded-full blur-3xl"></div>
-                <div class="relative portrait-frame p-4">
-                    <img src="IMG-20250925-WA0034.jpg" class="w-full grayscale hover:grayscale-0 transition-all duration-1000 shadow-2xl">
+        <div class="lg:col-span-7 space-y-14 reveal">
+            <header class="space-y-8">
+                <p class="eyebrow text-[#C5A059] opacity-80">Gouvernance Associative · Chiapas</p>
+                <h1 class="font-cinzel text-7xl lg:text-9xl leading-none tracking-tighter">Miguel David <br><span class="text-[#C8211E]">Tillero</span> Álvarez</h1>
+                <div class="flex gap-6 items-center">
+                    <div class="h-[1px] w-20 bg-gradient-to-r from-[#C5A059] to-transparent"></div>
+                    <p class="text-gold-gradient font-cinzel text-sm tracking-[0.7em] uppercase font-semibold">Magna Cum Laude | Excellence AF México</p>
                 </div>
-            </div>
+            </header>
 
-            <div class="lg:col-span-7 space-y-10">
-                <header class="space-y-4">
-                    <h2 class="text-afred font-cinzel tracking-[0.8em] text-xs uppercase font-bold">Direction Générale</h2>
-                    <h1 class="text-5xl lg:text-7xl font-cinzel leading-none tracking-tighter">Miguel David <br>Tillero Álvarez</h1>
-                    <p class="text-afgold font-cinzel text-[10px] tracking-[0.5em] uppercase">Magna Cum Laude | Délégué Spécial</p>
-                </header>
-
-                <p id="bio" class="text-gray-400 font-light leading-relaxed text-base italic border-l-2 border-afred/40 pl-8">
-                    "Pédagogue spécialisé, il conduit l'excellence de l'unique centre de certifications DELF/DALF au Chiapas, articulant innovation agroécologique et mobilité internationale."
+            <div class="reveal border-red-focus pl-14 space-y-8">
+                <p class="font-cormorant italic text-3xl text-white/90 leading-relaxed text-justify">
+                    "Conduire l'excellence de l'unique centre de certifications DELF/DALF au Chiapas par l'innovation agroécologique et la mobilité stratégique vers Vichy 2026."
                 </p>
+            </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6">
-                    <div class="glass-card p-4 rounded-xs">
-                        <video autoplay loop muted playsinline class="h-16 w-auto opacity-90">
-                            <source src="Multimedia (1).mp4" type="video/mp4">
-                        </video>
+            <div class="grid grid-cols-3 gap-1 glass-luxury p-14 rounded-sm ring-1 ring-white/10">
+                <div class="text-center px-4">
+                    <p class="font-cinzel text-5xl text-white">575</p>
+                    <p class="text-[9px] tracking-widest uppercase opacity-40 mt-3 font-semibold">Inscriptions 2025</p>
+                </div>
+                <div class="text-center border-x border-white/10 px-4">
+                    <p class="font-cinzel text-5xl text-[#C8211E]">64%</p>
+                    <p class="text-[9px] tracking-widest uppercase opacity-40 mt-3 font-semibold">Élèves Femmes</p>
+                </div>
+                <div class="text-center px-4">
+                    <p class="font-cinzel text-5xl text-[#C5A059]">VICHY</p>
+                    <p class="text-[9px] tracking-widest uppercase opacity-40 mt-3 font-semibold">Mobilité 2026</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-14 pt-8">
+                <video autoplay loop muted playsinline class="h-28 w-auto mix-blend-screen contrast-150 opacity-100 shadow-2xl">
+                    <source src="Multimedia (1).mp4" type="video/mp4">
+                </video>
+                <div class="space-y-2 opacity-30 border-l border-white/20 pl-12">
+                    <p class="text-[9px] tracking-[0.6em] uppercase font-bold">Signature de la Direction</p>
+                    <p class="text-[8px] tracking-[0.4em] uppercase">Validé par le Comité Directivo</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="strategie" class="py-52 bg-black/60 relative overflow-hidden">
+    <div class="container grid grid-cols-1 md:grid-cols-2 gap-40 relative z-10">
+        <div class="reveal space-y-10 group">
+            <h3 class="font-cinzel text-[#C5A059] text-sm tracking-[1.2em] uppercase border-b border-white/5 pb-4">Vision Stratégique</h3>
+            <p class="font-cormorant text-5xl leading-tight group-hover:text-white transition-colors duration-700">Ser el centro de referencia en la difusión cultural francófona en Chiapas.</p>
+            <p class="text-[12px] tracking-[0.3em] leading-loose opacity-40 uppercase font-light">
+                Conectando a nuestra comunidad con el mundo a través de la educación, el arte y la cooperación internacional de alto nivel.
+            </p>
+        </div>
+        <div class="reveal space-y-10 group">
+            <h3 class="font-cinzel text-[#C8211E] text-sm tracking-[1.2em] uppercase border-b border-white/5 pb-4">Mission Académique</h3>
+            <p class="font-cormorant text-5xl leading-tight group-hover:text-white transition-colors duration-700">Promover la lengua francesa y las culturas francófonas en San Cristóbal.</p>
+            <p class="text-[12px] tracking-[0.3em] leading-loose opacity-40 uppercase font-light">
+                Creando un espacio abierto de aprendizaje, diálogo y encuentro intercultural bajo los estándares de la Fondation Alliance Française.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section id="gouvernance" class="py-52 border-y border-white/5 bg-[#030303]">
+    <div class="container max-w-6xl">
+        <div class="section-header mb-40 reveal text-center space-y-6">
+            <p class="eyebrow text-[#C5A059]">Responsabilité Institutionnelle</p>
+            <h2 class="title-lg text-6xl">Conseil d'Administration</h2>
+            <div class="w-40 h-[1px] bg-[#C8211E] mx-auto mt-10"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-32 gap-y-16">
+            <div class="council-card reveal">
+                <p class="text-[#C5A059] font-cinzel text-sm tracking-widest font-bold">Diana Verania Zebadúa Coello</p>
+                <p class="caption text-[10px] mt-2 opacity-60">Présidente — Représentation légale et supervision</p>
+            </div>
+            <div class="council-card reveal">
+                <p class="text-[#C5A059] font-cinzel text-sm tracking-widest font-bold">Antoine Lissorgues</p>
+                <p class="caption text-[10px] mt-2 opacity-60">Vice-Président — Appui stratégique et coordination</p>
+            </div>
+            <div class="council-card reveal">
+                <p class="text-[#C5A059] font-cinzel text-sm tracking-widest font-bold">Sophia Pincemin</p>
+                <p class="caption text-[10px] mt-2 opacity-60">Secrétaire — Garde des archives et correspondance</p>
+            </div>
+            <div class="council-card reveal">
+                <p class="text-[#C5A059] font-cinzel text-sm tracking-widest font-bold">Elsa Samperio</p>
+                <p class="caption text-[10px] mt-2 opacity-60">Trésorière — Gestion et transparence fiduciaria</p>
+            </div>
+            <div class="council-card reveal">
+                <p class="text-[#C5A059] font-cinzel text-sm tracking-widest font-bold">Patrick Robert de Bréon</p>
+                <p class="caption text-[10px] mt-2 opacity-60">Vocal — Relations Diplomatiques et Consulat</p>
+            </div>
+            <div class="council-card reveal">
+                <p class="text-[#C5A059] font-cinzel text-sm tracking-widest font-bold">Mariana Landwehr</p>
+                <p class="caption text-[10px] mt-2 opacity-60">Vocale — Promotion de la vie associative</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="fondement" class="py-52 relative">
+    <div class="container max-w-6xl">
+        <div class="glass-luxury p-24 rounded-sm space-y-20 reveal border-t-4 border-t-[#C8211E]">
+            <div class="flex items-center gap-14">
+                <span class="text-8xl text-[#C8211E] font-cinzel opacity-40">⚖</span>
+                <div class="space-y-4">
+                    <h2 class="title-lg text-5xl">Cadre Légal du Mandat</h2>
+                    <p class="eyebrow opacity-40">Légalité et Conformité Normative</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
+                <div class="border-l border-white/10 pl-12 reveal space-y-6">
+                    <h4 class="font-cinzel text-[#C5A059] text-md tracking-[0.3em] uppercase">Protocolisations</h4>
+                    <p class="text-[12px] tracking-widest opacity-40 leading-relaxed uppercase">
+                        Souveraineté exécutive confirmée par les actes notariés de 2015, 2018, 2019, 2022 et 2025.
+                    </p>
+                </div>
+                <div class="border-l border-white/10 pl-12 reveal space-y-6">
+                    <h4 class="font-cinzel text-[#C5A059] text-md tracking-[0.3em] uppercase">Facultés SAT & Notaire</h4>
+                    <p class="text-[12px] tracking-widest opacity-40 leading-relaxed uppercase">
+                        Le Directeur est investi de pouvoirs de Délégué Spécial pour les gestions fiscales et administratives majeures.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="liaison" class="py-52 border-t border-white/5 bg-gradient-to-b from-black to-[#050505]">
+    <div class="container grid grid-cols-1 lg:grid-cols-2 gap-40 items-start">
+        <div class="reveal space-y-16">
+            <div class="space-y-6">
+                <h2 class="title-lg text-[#C8211E] text-6xl">Liaison <br>Diplomatique</h2>
+                <p class="eyebrow text-[#C5A059]">Service de Requêtes Officielles</p>
+            </div>
+
+            <form action="mailto:direccionsancristobal@alianzafr.edu.mx" method="post" enctype="text/plain" class="space-y-14">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="space-y-2">
+                        <label class="caption text-[7px]">Identité / Institution</label>
+                        <input type="text" name="Nom" required class="w-full bg-transparent border-b border-white/10 p-4 text-[12px] tracking-[0.3em] outline-none focus:border-[#C5A059] transition-all uppercase">
                     </div>
-                    <div class="space-y-3">
-                        <p class="text-[10px] tracking-[0.3em] uppercase text-white/60">Horaires d'ouverture</p>
-                        <p class="text-[9px] text-gray-400 uppercase">LUN - VEN : 09h00 - 14h00 | 16h00 - 19h00</p>
-                        <p class="text-[9px] text-gray-400 uppercase">SAM : 09h00 - 14h00</p>
+                    <div class="space-y-2">
+                        <label class="caption text-[7px]">Contact Officiel</label>
+                        <input type="email" name="Email" required class="w-full bg-transparent border-b border-white/10 p-4 text-[12px] tracking-[0.3em] outline-none focus:border-[#C5A059] transition-all uppercase">
+                    </div>
+                </div>
+                <select name="Objet" class="w-full bg-transparent border-b border-white/10 p-4 text-[12px] tracking-[0.3em] outline-none focus:border-[#C5A059] transition-all uppercase font-mont">
+                    <option value="" disabled selected class="text-black">SÉLECTIONNEZ LE MOTIF ▾</option>
+                    <option value="Partenariat" class="text-black">Partenariat Académique (La Salle/ITAES)</option>
+                    <option value="Vichy" class="text-black">Mobilité Vichy 2026 (CAVILAM)</option>
+                    <option value="Diplomatie" class="text-black">Liaison Diplomatique / Consulat</option>
+                    <option value="Audit" class="text-black">Transparence et Audit fiduciaria</option>
+                </select>
+                <textarea name="Msg" placeholder="DÉTAILLER VOTRE REQUÊTE..." rows="5" class="w-full bg-transparent border-b border-white/10 p-4 text-[12px] tracking-[0.2em] outline-none focus:border-[#C5A059] transition-all uppercase"></textarea>
+                <button type="submit" class="btn-send w-full uppercase">Transmettre la Requête</button>
+            </form>
+        </div>
+
+        <div class="reveal space-y-24">
+            <div class="text-center space-y-12">
+                <div class="bg-white p-8 inline-block shadow-[0_0_80px_rgba(200,33,30,0.2)] rounded-xs transform hover:rotate-2 hover:scale-105 transition-all duration-1000">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=mailto:direccionsancristobal@alianzafr.edu.mx" alt="QR Authentification Direction">
+                </div>
+                <p class="caption">Scanner pour l'authentification de contact</p>
+            </div>
+            
+            <div class="glass-luxury p-16 rounded-sm space-y-14 border-r-4 border-r-[#C5A059]">
+                <div class="flex gap-10 items-center border-b border-white/5 pb-10 group">
+                    <span class="text-4xl text-[#C5A059] group-hover:text-white transition-colors">✉</span>
+                    <div>
+                        <p class="caption text-[9px] text-[#C5A059] tracking-widest">Courriel de la Direction</p>
+                        <p class="text-[13px] tracking-widest mt-2 font-light">DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.MX</p>
+                    </div>
+                </div>
+                <div class="flex gap-10 items-center border-b border-white/5 pb-10 group">
+                    <span class="text-4xl text-[#C5A059] group-hover:text-white transition-colors">☎</span>
+                    <div>
+                        <p class="caption text-[9px] text-[#C5A059] tracking-widest">Administration Centrale</p>
+                        <p class="text-[13px] tracking-widest mt-2 font-light">+52 1 967 342 44 56</p>
+                    </div>
+                </div>
+                <div class="flex gap-10 items-center group">
+                    <span class="text-4xl text-[#C5A059] group-hover:text-white transition-colors">◎</span>
+                    <div>
+                        <p class="caption text-[9px] text-[#C5A059] tracking-widest">Sede San Cristóbal</p>
+                        <p class="text-[13px] tracking-widest mt-2 uppercase font-light">AV. LA ALMOLONGA 80, BARRIO SANTA LUCÍA, SCSC</p>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</section>
 
-    <section class="py-24 bg-neutral-950/50 border-y border-white/5">
-        <div class="max-w-6xl mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div class="stat-card p-8 text-center">
-                <p class="text-4xl font-cinzel text-afred mb-2">575</p>
-                <p class="text-[9px] tracking-[0.4em] uppercase text-gray-500">Inscriptions 2025</p>
+<section id="partners" class="py-52 bg-black overflow-hidden">
+    <div class="container text-center space-y-40">
+        <div class="space-y-8 reveal">
+            <h2 class="title-lg text-6xl">Écosystème de Prestige</h2>
+            <p class="eyebrow opacity-40">Alliances Institutionnelles et Coopération</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-44 items-center justify-items-center reveal">
+            <div class="space-y-10 group">
+                <div class="h-24 flex items-center"><img src="logo-parmentier.png" alt="Parmentier" class="max-h-20 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"></div>
+                <p class="font-cinzel text-[11px] tracking-[0.5em] text-[#C5A059] uppercase opacity-60">Institut Parmentier</p>
             </div>
-            <div class="stat-card p-8 text-center">
-                <p class="text-4xl font-cinzel text-white mb-2">64%</p>
-                <p class="text-[9px] tracking-[0.4em] uppercase text-gray-500">Élèves Femmes</p>
+            <div class="space-y-10 group">
+                <div class="h-24 flex items-center"><img src="logo-lasalle.png" alt="La Salle" class="max-h-28 scale-150 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-125 transition-all duration-1000"></div>
+                <p class="font-cinzel text-[11px] tracking-[0.5em] text-[#C5A059] uppercase opacity-60">Centre La Salle SCSC</p>
             </div>
-            <div class="stat-card p-8 text-center">
-                <p class="text-4xl font-cinzel text-afgold mb-2">VICHY</p>
-                <p class="text-[9px] tracking-[0.4em] uppercase text-gray-500">Mobilité 2026</p>
+            <div class="space-y-10 group">
+                <div class="h-24 flex items-center"><img src="logo-cavilam.png" alt="CAVILAM" class="max-h-20 grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-1000"></div>
+                <p class="font-cinzel text-[11px] tracking-[0.5em] text-[#C5A059] uppercase opacity-60">CAVILAM Vichy</p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="py-32">
-        <div class="max-w-6xl mx-auto px-8">
-            <h3 class="font-cinzel text-center text-[10px] tracking-[0.8em] uppercase text-afred mb-20">Partenariats de Prestige</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-20">
-                <div class="text-center group">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://www.facebook.com/afsancris" class="w-20 h-20 mx-auto mb-6 bg-white p-2 grayscale group-hover:grayscale-0 transition-all">
-                    <h4 class="font-cinzel text-xs tracking-widest text-afred">Parmentier</h4>
-                    <p class="text-[8px] text-gray-500 uppercase mt-2">Gastronomie & Agroécologie</p>
+<section id="satisfaction" class="py-52">
+    <div class="container max-w-5xl">
+        <div class="glass-luxury p-28 rounded-sm space-y-24 reveal relative">
+            <div class="absolute top-0 right-0 p-10 font-cinzel text-5xl opacity-5 text-[#C5A059]">AFSC</div>
+            <div class="text-center space-y-8 border-b border-white/5 pb-12">
+                <h3 class="title-lg text-[#C5A059] text-5xl uppercase tracking-[0.2em]">Évaluation de l'Excellence</h3>
+                <p class="font-cormorant text-2xl italic opacity-50 uppercase tracking-widest">Qualité de l'Enseignement & Service Administratif</p>
+            </div>
+
+            <form id="eval-form" class="space-y-24">
+                <div class="space-y-14 reveal">
+                    <p class="font-cinzel text-[14px] tracking-[0.5em] text-center uppercase text-white/70">1. Excellence Pédagogique et Innovation</p>
+                    <div class="star-rating">
+                        <input type="radio" id="st1-5" name="q1" value="5"><label for="st1-5">★</label>
+                        <input type="radio" id="st1-4" name="q1" value="4"><label for="st1-4">★</label>
+                        <input type="radio" id="st1-3" name="q1" value="3"><label for="st1-3">★</label>
+                        <input type="radio" id="st1-2" name="q1" value="2"><label for="st1-2">★</label>
+                        <input type="radio" id="st1-1" name="q1" value="1"><label for="st1-1">★</label>
+                    </div>
                 </div>
-                <div class="text-center group">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://www.instagram.com/afsancris" class="w-20 h-20 mx-auto mb-6 bg-white p-2 grayscale group-hover:grayscale-0 transition-all">
-                    <h4 class="font-cinzel text-xs tracking-widest text-afred">La Salle</h4>
-                    <p class="text-[8px] text-gray-500 uppercase mt-2">Pôle de Certifications DELF</p>
+                <div class="space-y-14 reveal">
+                    <p class="font-cinzel text-[14px] tracking-[0.5em] text-center uppercase text-white/70">2. Efficacité Administrative et Accueil</p>
+                    <div class="star-rating">
+                        <input type="radio" id="st2-5" name="q2" value="5"><label for="st2-5">★</label>
+                        <input type="radio" id="st2-4" name="q2" value="4"><label for="st2-4">★</label>
+                        <input type="radio" id="st2-3" name="q2" value="3"><label for="st2-3">★</label>
+                        <input type="radio" id="st2-2" name="q2" value="2"><label for="st2-2">★</label>
+                        <input type="radio" id="st2-1" name="q2" value="1"><label for="st2-1">★</label>
+                    </div>
                 </div>
-                <div class="text-center group">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://www.alianzafr.edu.mx" class="w-20 h-20 mx-auto mb-6 bg-white p-2 grayscale group-hover:grayscale-0 transition-all">
-                    <h4 class="font-cinzel text-xs tracking-widest text-afred">ITAES</h4>
-                    <p class="text-[8px] text-gray-500 uppercase mt-2">Formation Professionnelle</p>
-                </div>
+                <textarea placeholder="OBSERVATIONS ET SUGGESTIONS POUR LA DIRECTION..." class="w-full bg-transparent border-b border-white/10 p-8 text-[12px] tracking-widest uppercase outline-none focus:border-[#C8211E] transition-all duration-500 font-mont"></textarea>
+                <button type="submit" class="btn-send w-full text-[#C5A059] border-[#C5A059] hover:bg-[#C5A059] hover:text-black">SOUMETTRE L'ANALYSE</button>
+            </form>
+            <div id="done" class="hidden text-center font-cinzel text-md text-[#C5A059] tracking-[0.6em] animate-pulse">
+                MERCI. VOTRE ÉVALUATION A ÉTÉ REGISTRÉE DANS NOTRE SYSTÈME DE QUALITÉ.
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <footer class="p-20 bg-black border-t border-white/5 text-center">
-        <div class="space-y-6">
-            <p class="text-[10px] tracking-[0.6em] uppercase text-white/40">Alliance Française de San Cristóbal de Las Casas</p>
-            <p class="text-[9px] tracking-[0.4em] text-gray-600 uppercase">Av. La Almolonga 80 | Barrio Santa Lucía | +52 967 342 44 56</p>
-            <div class="flex justify-center gap-4 pt-4 items-center">
-                <div class="h-[1px] w-8 bg-afred/30"></div>
-                <span class="text-afred font-cinzel text-[7px] tracking-[0.8em] uppercase">Garante de l'excellence française</span>
-                <div class="h-[1px] w-8 bg-afred/30"></div>
-            </div>
-        </div>
-    </footer>
+<footer class="p-40 border-t border-white/5 glass-luxury text-center space-y-20 relative">
+    <div class="flex justify-center items-center gap-16 opacity-20 reveal">
+        <div class="h-[1px] w-52 bg-white"></div>
+        <span class="font-cinzel text-[16px] tracking-[1.4em]">AF SCSC 2025</span>
+        <div class="h-[1px] w-52 bg-white"></div>
+    </div>
+    <div class="caption text-[11px] leading-loose opacity-50 space-y-6 reveal font-light uppercase tracking-[0.3em]">
+        <p>Alliance Française de San Cristóbal de Las Casas AC</p>
+        <p>Av. La Almolonga 80 · Chiapas · Mexique · CP 29270</p>
+        <p class="text-[#C8211E] font-bold">Unique Centre Officiel de Certifications DELF/DALF au Chiapas</p>
+        <p class="text-[9px] mt-4 tracking-widest">RFC: AFM110210ER4 · Fédération des Alliances Françaises au Mexique</p>
+    </div>
+    <div class="flex justify-center gap-2 scale-[2.0] pt-14 opacity-40">
+        <span class="w-1.5 h-10 bg-[#002395]"></span><span class="w-1.5 h-10 bg-white"></span><span class="w-1.5 h-10 bg-[#ED2939]"></span>
+    </div>
+</footer>
 
-    <script>
-        const content = {
-            fr: { bio: '"Pédagogue spécialisé (Magna Cum Laude), il dirige la réorganisation stratégique de l\'institution en tant que Délégué Spécial, consolidant des alliances de haut niveau avec La Salle, l\'ITAES et l\'Institut Parmentier."' },
-            es: { bio: '"Pedagogo especializado (Magna Cum Laude), dirige la reorganización estratégica de la institución como Delegado Especial, consolidando alianzas de alto nivel con La Salle, ITAES e Instituto Parmentier."' }
-        };
-        function setLang(l) { document.getElementById('bio').innerText = content[l].bio; }
-    </script>
+<script>
+    // 3D Visual Engine: Vanta NET
+    VANTA.NET({
+        el: "#vanta-bg", mouseControls: true, touchControls: true, gyroControls: false,
+        minHeight: 200, minWidth: 200, scale: 1.0, scaleMobile: 1.0,
+        color: 0xc8211e, backgroundColor: 0x050505, points: 15, maxDistance: 19, spacing: 16, showDots: true
+    });
+
+    // GSAP Scroll Engine for Advanced Reveal
+    gsap.registerPlugin(ScrollTrigger);
+    document.querySelectorAll('.reveal').forEach((el) => {
+        gsap.to(el, {
+            scrollTrigger: { trigger: el, start: "top 92%" },
+            opacity: 1, y: 0, duration: 2.2, ease: "power4.out"
+        });
+    });
+
+    // Audio State Management
+    const audio = document.getElementById('bg-audio');
+    let playing = false;
+    function toggleAudio() {
+        const btn = document.getElementById('audio-btn');
+        if (!playing) {
+            audio.volume = 0.25;
+            audio.play().catch(() => console.log("User Interaction Required"));
+            document.getElementById('wave-ui').style.display = 'flex';
+            document.getElementById('audio-placeholder').style.display = 'none';
+        } else {
+            audio.pause();
+            document.getElementById('wave-ui').style.display = 'none';
+            document.getElementById('audio-placeholder').style.display = 'block';
+        }
+        playing = !playing;
+    }
+
+    // Dynamic Navigation Header
+    window.onscroll = () => {
+        const n = document.getElementById('nav');
+        if (window.scrollY > 100) { 
+            n.style.background = "rgba(5,5,5,0.98)"; 
+            n.style.padding = "1.5rem 3rem";
+            n.style.borderBottom = "1px solid rgba(197,160,89,0.1)";
+        } else { 
+            n.style.background = "transparent"; 
+            n.style.padding = "2.5rem 3rem";
+            n.style.borderBottom = "none";
+        }
+    }
+
+    // Evaluation Logic
+    document.getElementById('eval-form').onsubmit = (e) => {
+        e.preventDefault();
+        gsap.to('#eval-form', { opacity: 0, duration: 1.2, onComplete: () => {
+            document.getElementById('eval-form').classList.add('hidden');
+            document.getElementById('done').classList.remove('hidden');
+        }});
+    }
+</script>
+
 </body>
 </html>
