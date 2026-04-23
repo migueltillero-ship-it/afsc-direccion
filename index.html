@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direction Générale | Alliance Française de San Cristóbal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        afred: '#E0102B',
+                        afgold: '#D4AF37',
+                        luxuryblack: '#080808',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            color: #f3f4f6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(224, 16, 43, 0.05), transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.03), transparent 40%);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .input-luxury {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .input-luxury:focus {
+            outline: none;
+            border-bottom-color: #D4AF37;
+            padding-left: 8px;
+        }
+        .mask-image {
+            -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="min-h-screen font-montserrat overflow-x-hidden selection:bg-afred">
+
+    <nav class="fixed w-full top-0 z-50 p-8 flex justify-between items-center bg-gradient-to-bottom from-black/80 to-transparent">
+        <div class="font-cinzel text-xl tracking-[0.4em] flex items-center gap-3">
+            <span class="text-afred text-3xl italic font-serif lowercase">af</span>
+            <span class="hidden md:inline uppercase font-bold border-l border-white/20 pl-4">Alliance Française</span>
+        </div>
+        
+        <div class="flex gap-6 font-cinzel text-xs tracking-widest uppercase">
+            <button id="lang-fr" onclick="changeLang('fr')" class="text-afgold border-b border-afgold pb-1 transition-all">Français</button>
+            <button id="lang-es" onclick="changeLang('es')" class="text-gray-500 hover:text-white pb-1 transition-all">Español</button>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 min-h-screen flex items-center pt-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 w-full items-center">
+            
+            <div class="lg:col-span-6 z-10">
+                <div id="content-fr" class="lang-section transition-all duration-700">
+                    <h2 class="font-cinzel text-afgold text-sm tracking-[0.5em] uppercase mb-4">Direction Générale</h2>
+                    <h1 class="font-cinzel text-4xl lg:text-5xl text-white mb-8 leading-tight">L'excellence au service de la francophonie</h1>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed mb-12 text-justify">
+                        « L’Alliance Française de San Cristóbal de Las Casas a l’insigne honneur de vous souhaiter la bienvenue. Notre institution se tient à votre entière disposition pour toute requête officielle ou partenariat stratégique. »
+                    </p>
+                </div>
+
+                <div id="content-es" class="lang-section hidden opacity-0 transition-all duration-700">
+                    <h2 class="font-cinzel text-afgold text-sm tracking-[0.5em] uppercase mb-4">Dirección General</h2>
+                    <h1 class="font-cinzel text-4xl lg:text-5xl text-white mb-8 leading-tight">Excelencia al servicio de la francofonía</h1>
+                    <p class="text-gray-400 font-light text-sm leading-relaxed mb-12 text-justify">
+                        « La Alianza Francesa de San Cristóbal de Las Casas tiene el honor de darle la bienvenida. Nuestra institución se pone a su entera disposición para cualquier solicitud oficial o alianza estratégica. »
+                    </p>
+                </div>
+
+                <div class="glass-panel p-10 rounded-sm border-t-2 border-t-afred/30 relative">
+                    <form id="contact-form" class="space-y-8">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <input type="text" id="input-name" placeholder="NOM COMPLET / NOMBRE COMPLETO" class="input-luxury w-full py-2 text-xs tracking-widest text-white uppercase" required>
+                            <input type="email" id="input-email" placeholder="COURRIEL / CORREO" class="input-luxury w-full py-2 text-xs tracking-widest text-white uppercase" required>
+                        </div>
+                        <input type="text" id="input-subject" placeholder="OBJET / ASUNTO" class="input-luxury w-full py-2 text-xs tracking-widest text-white uppercase" required>
+                        <textarea id="input-message" rows="3" placeholder="VOTRE MESSAGE / MENSAJE" class="input-luxury w-full py-2 text-xs tracking-widest text-white uppercase resize-none" required></textarea>
+                        
+                        <button type="submit" class="w-full bg-transparent border border-afgold text-afgold py-4 font-cinzel text-xs tracking-[0.3em] uppercase hover:bg-afgold hover:text-black transition-all duration-500">
+                            <span id="btn-text">Transmettre / Enviar</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="lg:col-span-6 relative h-full min-h-[600px] flex flex-col justify-end">
+                <img src="IMG-20250925-WA0034.jpg" alt="Miguel D Tillero Álvarez" class="absolute top-0 right-0 h-[90%] w-auto object-contain mask-image grayscale hover:grayscale-0 transition-all duration-1000 opacity-80">
+                
+                <div class="glass-panel p-8 relative z-20 border-l border-afgold/50 ml-12">
+                    <h3 class="font-cinzel text-xl text-white mb-1">Miguel David Tillero Álvarez</h3>
+                    <p class="text-afgold font-cinzel text-[10px] tracking-[0.4em] uppercase mb-6">Directeur Général | AF San Cristóbal</p>
+                    
+                    <div class="space-y-4 text-[10px] tracking-[0.2em] font-light text-gray-400 uppercase">
+                        <p class="flex items-center gap-3">
+                            <span class="w-4 h-[1px] bg-afgold"></span>
+                            Av. La Almolonga 80, Barrio Santa Lucía, SCSC.
+                        </p>
+                        <p class="flex items-center gap-3">
+                            <span class="w-4 h-[1px] bg-afgold"></span>
+                            WhatsApp: +52 967 172 1870
+                        </p>
+                        <div class="pt-4 opacity-50">
+                            Único centro oficial DELF/DALF en Chiapas.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function changeLang(lang) {
+            const frContent = document.getElementById('content-fr');
+            const esContent = document.getElementById('content-es');
+            const btnFr = document.getElementById('lang-fr');
+            const btnEs = document.getElementById('lang-es');
+
+            if (lang === 'es') {
+                frContent.classList.add('hidden', 'opacity-0');
+                esContent.classList.remove('hidden');
+                setTimeout(() => esContent.classList.remove('opacity-0'), 10);
+                btnEs.classList.add('text-afgold', 'border-afgold');
+                btnFr.classList.remove('text-afgold', 'border-afgold');
+                btnFr.classList.add('text-gray-500');
+            } else {
+                esContent.classList.add('hidden', 'opacity-0');
+                frContent.classList.remove('hidden');
+                setTimeout(() => frContent.classList.remove('opacity-0'), 10);
+                btnFr.classList.add('text-afgold', 'border-afgold');
+                btnEs.classList.remove('text-afgold', 'border-afgold');
+                btnEs.classList.add('text-gray-500');
+            }
+        }
+    </script>
+</body>
+</html>
