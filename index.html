@@ -10,126 +10,127 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { afred: '#e11f1c', afdark: '#050505', afgold: '#C5A059' },
+                    colors: { afred: '#e11f1c', afdark: '#030303', afgold: '#C5A059' },
                     fontFamily: { cinzel: ['Cinzel', 'serif'], montserrat: ['Montserrat', 'sans-serif'] }
                 }
             }
         }
     </script>
     <style>
-        .glass-card { background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.03); }
-        .portrait-frame { border-left: 1px solid rgba(225, 31, 28, 0.4); border-bottom: 1px solid rgba(225, 31, 28, 0.4); }
-        .text-justified { text-align: justify; text-justify: inter-word; }
-        video { filter: contrast(1.1) brightness(1.1); mix-blend-mode: screen; }
+        .glass-card { background: rgba(255, 255, 255, 0.01); backdrop-filter: blur(40px); border: 1px solid rgba(255, 255, 255, 0.04); }
+        .portrait-frame { border-left: 1px solid #e11f1c; border-bottom: 1px solid #e11f1c; }
+        .stat-card { border-top: 1px solid rgba(225, 31, 28, 0.2); }
+        video { filter: contrast(1.1) brightness(1.2); mix-blend-mode: screen; }
     </style>
 </head>
 <body class="bg-afdark text-white font-montserrat tracking-tight selection:bg-afred">
 
-    <nav class="fixed w-full z-50 p-10 flex justify-between items-center mix-blend-difference">
+    <nav class="fixed w-full z-50 p-8 flex justify-between items-center bg-black/60 backdrop-blur-xl border-b border-white/5">
         <div class="flex items-center gap-6">
             <span class="font-cinzel text-4xl text-afred font-bold">af</span>
-            <div class="h-10 w-[1px] bg-white/10 hidden md:block"></div>
             <div class="hidden md:block">
-                <p class="font-cinzel text-[11px] tracking-[0.5em] uppercase">Alliance Française</p>
-                <p class="font-cinzel text-[8px] tracking-[0.4em] text-afred uppercase">San Cristóbal de Las Casas</p>
+                <p class="font-cinzel text-[10px] tracking-[0.5em] uppercase">Alliance Française</p>
+                <p class="font-cinzel text-[8px] tracking-[0.4em] text-afred uppercase font-bold">San Cristóbal de Las Casas</p>
             </div>
         </div>
-        <div class="flex gap-10 text-[10px] tracking-[0.4em] font-light">
-            <button onclick="setLang('fr')" class="hover:text-afred transition-all border-b border-transparent hover:border-afred pb-1">FRANÇAIS</button>
-            <button onclick="setLang('es')" class="hover:text-afred transition-all border-b border-transparent hover:border-afred pb-1">ESPAÑOL</button>
+        <div class="flex gap-8 text-[9px] tracking-[0.4em]">
+            <button onclick="setLang('fr')" class="hover:text-afred transition-all">FR</button>
+            <button onclick="setLang('es')" class="hover:text-afred transition-all">ES</button>
         </div>
     </nav>
 
-    <main class="min-h-screen flex items-center justify-center pt-20">
-        <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
-            
-            <div class="lg:col-span-6 relative group">
-                <div class="absolute -top-10 -left-10 w-64 h-64 bg-afred/5 rounded-full blur-3xl"></div>
+    <main class="min-h-screen flex items-center pt-32 pb-20 px-8 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            <div class="lg:col-span-5 relative group">
+                <div class="absolute -top-10 -left-10 w-64 h-64 bg-afred/10 rounded-full blur-3xl"></div>
                 <div class="relative portrait-frame p-4">
-                    <img src="IMG-20250925-WA0034.jpg" class="w-full grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out shadow-2xl">
-                </div>
-                <div class="absolute -bottom-10 -right-10 w-48 shadow-2xl border border-white/5 hidden lg:block">
-                    <img src="IMG-20260123-WA0004.jpg" class="grayscale">
+                    <img src="IMG-20250925-WA0034.jpg" class="w-full grayscale hover:grayscale-0 transition-all duration-1000 shadow-2xl">
                 </div>
             </div>
 
-            <div class="lg:col-span-6 space-y-12">
+            <div class="lg:col-span-7 space-y-10">
                 <header class="space-y-4">
-                    <h2 class="text-afred font-cinzel tracking-[0.8em] text-xs uppercase font-semibold">Monsieur le Directeur Général</h2>
+                    <h2 class="text-afred font-cinzel tracking-[0.8em] text-xs uppercase font-bold">Direction Générale</h2>
                     <h1 class="text-5xl lg:text-7xl font-cinzel leading-none tracking-tighter">Miguel David <br>Tillero Álvarez</h1>
                     <p class="text-afgold font-cinzel text-[10px] tracking-[0.5em] uppercase">Magna Cum Laude | Délégué Spécial</p>
                 </header>
 
-                <div class="space-y-6">
-                    <p id="bio" class="text-gray-400 font-light leading-relaxed text-base text-justified border-l-2 border-afred/20 pl-8">
-                        "Pédagogue spécialisé, il dirige la réorganisation stratégique de l'institution, consolidant des alliances de haut niveau avec La Salle, l'ITAES et l'Institut Parmentier pour le rayonnement de la culture francophone au Chiapas."
-                    </p>
-                </div>
+                <p id="bio" class="text-gray-400 font-light leading-relaxed text-base italic border-l-2 border-afred/40 pl-8">
+                    "Pédagogue spécialisé, il conduit l'excellence de l'unique centre de certifications DELF/DALF au Chiapas, articulant innovation agroécologique et mobilité internationale."
+                </p>
 
-                <div class="pt-8 flex items-center gap-8">
-                    <div class="glass-card p-4 rounded-sm">
-                        <video autoplay loop muted playsinline class="h-20 w-auto opacity-80">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6">
+                    <div class="glass-card p-4 rounded-xs">
+                        <video autoplay loop muted playsinline class="h-16 w-auto opacity-90">
                             <source src="Multimedia (1).mp4" type="video/mp4">
                         </video>
                     </div>
-                    <div class="text-[9px] tracking-[0.4em] uppercase text-white/40 leading-loose">
-                        Autorité Légale<br>& Pédagogique
+                    <div class="space-y-3">
+                        <p class="text-[10px] tracking-[0.3em] uppercase text-white/60">Horaires d'ouverture</p>
+                        <p class="text-[9px] text-gray-400 uppercase">LUN - VEN : 09h00 - 14h00 | 16h00 - 19h00</p>
+                        <p class="text-[9px] text-gray-400 uppercase">SAM : 09h00 - 14h00</p>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <section class="py-32 bg-neutral-950">
+    <section class="py-24 bg-neutral-950/50 border-y border-white/5">
+        <div class="max-w-6xl mx-auto px-8 grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="stat-card p-8 text-center">
+                <p class="text-4xl font-cinzel text-afred mb-2">575</p>
+                <p class="text-[9px] tracking-[0.4em] uppercase text-gray-500">Inscriptions 2025</p>
+            </div>
+            <div class="stat-card p-8 text-center">
+                <p class="text-4xl font-cinzel text-white mb-2">64%</p>
+                <p class="text-[9px] tracking-[0.4em] uppercase text-gray-500">Élèves Femmes</p>
+            </div>
+            <div class="stat-card p-8 text-center">
+                <p class="text-4xl font-cinzel text-afgold mb-2">VICHY</p>
+                <p class="text-[9px] tracking-[0.4em] uppercase text-gray-500">Mobilité 2026</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32">
         <div class="max-w-6xl mx-auto px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-24">
-                <div class="space-y-8 group text-center">
-                    <div class="bg-white p-3 inline-block rounded-xs hover:scale-110 transition-transform cursor-crosshair">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.facebook.com/afsancris" class="w-24 h-24">
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-cinzel text-xs tracking-widest text-afred">Institut Parmentier</h4>
-                        <p class="text-[9px] text-gray-500 uppercase tracking-widest leading-loose">Gastronomie &<br>Agroécologie</p>
-                    </div>
+            <h3 class="font-cinzel text-center text-[10px] tracking-[0.8em] uppercase text-afred mb-20">Partenariats de Prestige</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-20">
+                <div class="text-center group">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://www.facebook.com/afsancris" class="w-20 h-20 mx-auto mb-6 bg-white p-2 grayscale group-hover:grayscale-0 transition-all">
+                    <h4 class="font-cinzel text-xs tracking-widest text-afred">Parmentier</h4>
+                    <p class="text-[8px] text-gray-500 uppercase mt-2">Gastronomie & Agroécologie</p>
                 </div>
-                <div class="space-y-8 group text-center">
-                    <div class="bg-white p-3 inline-block rounded-xs hover:scale-110 transition-transform cursor-crosshair">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.instagram.com/afsancris" class="w-24 h-24">
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-cinzel text-xs tracking-widest text-afred">Collège La Salle</h4>
-                        <p class="text-[9px] text-gray-500 uppercase tracking-widest leading-loose">Certifications<br>DELF / DALF</p>
-                    </div>
+                <div class="text-center group">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://www.instagram.com/afsancris" class="w-20 h-20 mx-auto mb-6 bg-white p-2 grayscale group-hover:grayscale-0 transition-all">
+                    <h4 class="font-cinzel text-xs tracking-widest text-afred">La Salle</h4>
+                    <p class="text-[8px] text-gray-500 uppercase mt-2">Pôle de Certifications DELF</p>
                 </div>
-                <div class="space-y-8 group text-center">
-                    <div class="bg-white p-3 inline-block rounded-xs hover:scale-110 transition-transform cursor-crosshair">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.alianzafr.edu.mx" class="w-24 h-24">
-                    </div>
-                    <div class="space-y-2">
-                        <h4 class="font-cinzel text-xs tracking-widest text-afred">ITAES</h4>
-                        <p class="text-[9px] text-gray-500 uppercase tracking-widest leading-loose">Partenariat<br>Technique</p>
-                    </div>
+                <div class="text-center group">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://www.alianzafr.edu.mx" class="w-20 h-20 mx-auto mb-6 bg-white p-2 grayscale group-hover:grayscale-0 transition-all">
+                    <h4 class="font-cinzel text-xs tracking-widest text-afred">ITAES</h4>
+                    <p class="text-[8px] text-gray-500 uppercase mt-2">Formation Professionnelle</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="p-20 border-t border-white/5 bg-black">
-        <div class="max-w-4xl mx-auto text-center space-y-6">
-            <p class="text-[10px] tracking-[0.6em] uppercase text-white/30">Alliance Française de San Cristóbal de Las Casas</p>
-            <p class="text-[9px] tracking-[0.4em] text-gray-600">AV. LA ALMOLONGA 80 | BARRIO SANTA LUCÍA | +52 967 342 44 56</p>
-            <div class="flex justify-center gap-4 pt-4">
-                <div class="h-[1px] w-12 bg-afred"></div>
-                <span class="text-afred font-cinzel text-[8px] tracking-[0.8em] uppercase">L'excellence française au Chiapas</span>
-                <div class="h-[1px] w-12 bg-afred"></div>
+    <footer class="p-20 bg-black border-t border-white/5 text-center">
+        <div class="space-y-6">
+            <p class="text-[10px] tracking-[0.6em] uppercase text-white/40">Alliance Française de San Cristóbal de Las Casas</p>
+            <p class="text-[9px] tracking-[0.4em] text-gray-600 uppercase">Av. La Almolonga 80 | Barrio Santa Lucía | +52 967 342 44 56</p>
+            <div class="flex justify-center gap-4 pt-4 items-center">
+                <div class="h-[1px] w-8 bg-afred/30"></div>
+                <span class="text-afred font-cinzel text-[7px] tracking-[0.8em] uppercase">Garante de l'excellence française</span>
+                <div class="h-[1px] w-8 bg-afred/30"></div>
             </div>
         </div>
     </footer>
 
     <script>
         const content = {
-            fr: { bio: '"Pédagogue spécialisé (Magna Cum Laude), il dirige la réorganisation stratégique de l\'institution en tant que Délégué Spécial, consolidant des alliances de haut niveau avec La Salle, l\'ITAES et l\'Institut Parmentier pour le rayonnement de la francophonie au Chiapas."' },
-            es: { bio: '"Pedagogo especializado (Magna Cum Laude), dirige la reorganización estratégica de la institución como Delegado Especial, consolidando alianzas de alto nivel con La Salle, ITAES e Instituto Parmentier para el prestigio de la francofonía en Chiapas."' }
+            fr: { bio: '"Pédagogue spécialisé (Magna Cum Laude), il dirige la réorganisation stratégique de l\'institution en tant que Délégué Spécial, consolidant des alliances de haut niveau avec La Salle, l\'ITAES et l\'Institut Parmentier."' },
+            es: { bio: '"Pedagogo especializado (Magna Cum Laude), dirige la reorganización estratégica de la institución como Delegado Especial, consolidando alianzas de alto nivel con La Salle, ITAES e Instituto Parmentier."' }
         };
         function setLang(l) { document.getElementById('bio').innerText = content[l].bio; }
     </script>
